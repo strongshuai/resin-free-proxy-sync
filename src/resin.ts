@@ -8,10 +8,34 @@ interface ResinSubscription {
   node_count?: number;
 }
 
+function isIpv4Literal(hostname: string): boolean {
+  const parts = hostname.split(".");
+  return parts.length === 4 && parts.every((part) => /^\d{1,3}$/.test(part) && Number(part) <= 255);
+}
+
+export function normalizeResinApiBase(value: unknown): string {
+  const raw = String(value ?? "").trim();
+  if (!raw) throw new Error("RESIN_API_BASE is not configured");
+
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    throw new Error("RESIN_API_BASE must be a valid HTTP or HTTPS URL");
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") {
+    throw new Error("RESIN_API_BASE must use HTTP or HTTPS");
+  }
+
+  // Workers rejects outbound HTTP requests to a bare IPv4 address with error 1003.
+  if (url.protocol === "http:" && isIpv4Literal(url.hostname)) {
+    url.hostname = `${url.hostname.replace(/\./g, "-")}.sslip.io`;
+  }
+  return url.toString().replace(/\/+$/, "");
+}
+
 function resinBase(env: Env): string {
-  const base = String(env.RESIN_API_BASE ?? "").trim().replace(/\/+$/, "");
-  if (!base) throw new Error("RESIN_API_BASE is not configured");
-  return base;
+  return normalizeResinApiBase(env.RESIN_API_BASE);
 }
 
 function resinHeaders(env: Env): HeadersInit {
