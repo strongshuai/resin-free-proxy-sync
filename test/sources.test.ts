@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { parseProxyText } from "../src/sources";
+import {
+  DEFAULT_SOURCE_IDS,
+  PROXY_SOURCES,
+  parseProxyText,
+} from "../src/sources";
 import type { ProxyProtocol } from "../src/types";
 
 describe("parseProxyText", () => {
@@ -33,5 +37,17 @@ describe("parseProxyText", () => {
     );
     expect(records).toHaveLength(1);
     expect(records[0]?.uri).toBe("http://1.2.3.4:8080");
+  });
+});
+
+describe("proxy source catalog", () => {
+  it("uses unique ids and keeps every default source available", () => {
+    const ids = PROXY_SOURCES.map((source) => source.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(DEFAULT_SOURCE_IDS.every((id) => ids.includes(id))).toBe(true);
+  });
+
+  it("uses HTTPS for every public proxy source", () => {
+    expect(PROXY_SOURCES.every((source) => source.url.startsWith("https://"))).toBe(true);
   });
 });

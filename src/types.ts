@@ -27,7 +27,7 @@ export interface Env {
 }
 
 export type ProxyProtocol = "http" | "https" | "socks5";
-export type SourceKind = "plain" | "proxifly" | "geonode" | "spysme" | "myproxy";
+export type SourceKind = "plain" | "proxifly" | "spysme" | "myproxy";
 
 export interface ProxySource {
   id: string;

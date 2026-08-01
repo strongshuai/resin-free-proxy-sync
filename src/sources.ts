@@ -62,14 +62,49 @@ export const PROXY_SOURCES: readonly ProxySource[] = [
   {
     id: "thespeedx_http",
     name: "TheSpeedX HTTP",
-    url: "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
+    url: "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
     kind: "plain",
     protocol: "http",
   },
   {
     id: "thespeedx_socks5",
     name: "TheSpeedX SOCKS5",
-    url: "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt",
+    url: "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt",
+    kind: "plain",
+    protocol: "socks5",
+  },
+  {
+    id: "monosans_http",
+    name: "Monosans HTTP",
+    url: "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
+    kind: "plain",
+    protocol: "http",
+  },
+  {
+    id: "monosans_socks5",
+    name: "Monosans SOCKS5",
+    url: "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt",
+    kind: "plain",
+    protocol: "socks5",
+  },
+  {
+    id: "sunny9577_http",
+    name: "Sunny9577 HTTP",
+    url: "https://raw.githubusercontent.com/sunny9577/proxy-scraper/master/generated/http_proxies.txt",
+    kind: "plain",
+    protocol: "http",
+  },
+  {
+    id: "zaeem20_http",
+    name: "Zaeem20 HTTP",
+    url: "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/http.txt",
+    kind: "plain",
+    protocol: "http",
+  },
+  {
+    id: "zaeem20_socks5",
+    name: "Zaeem20 SOCKS5",
+    url: "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/socks5.txt",
     kind: "plain",
     protocol: "socks5",
   },
@@ -114,12 +149,6 @@ export const PROXY_SOURCES: readonly ProxySource[] = [
     url: "https://api.proxyscrape.com/v4/free-proxy-list/get?request=displayproxies&protocol=socks5&timeout=10000&country=all",
     kind: "plain",
     protocol: "socks5",
-  },
-  {
-    id: "geonode",
-    name: "GeoNode Recent",
-    url: "https://proxylist.geonode.com/api/proxy-list?limit=500&page=1&sort_by=lastChecked&sort_type=desc",
-    kind: "geonode",
   },
   {
     id: "myproxy_http",
@@ -256,40 +285,6 @@ function parseProxifly(
   return records;
 }
 
-function parseGeoNode(
-  text: string,
-  source: ProxySource,
-  allowedProtocols: ReadonlySet<ProxyProtocol>,
-  limit: number,
-): ProxyRecord[] {
-  const data: unknown = JSON.parse(text);
-  if (!data || typeof data !== "object") throw new Error("invalid JSON object");
-  const rows = (data as Record<string, unknown>).data;
-  if (!Array.isArray(rows)) throw new Error("missing data list");
-  const records: ProxyRecord[] = [];
-  const seen = new Set<string>();
-  for (const raw of rows) {
-    if (!raw || typeof raw !== "object") continue;
-    const item = raw as Record<string, unknown>;
-    const protocols = Array.isArray(item.protocols) ? item.protocols : [];
-    for (const protocol of protocols) {
-      const record = createRecord(
-        String(item.ip ?? ""),
-        String(item.port ?? ""),
-        String(protocol ?? ""),
-        source.id,
-        String(item.country ?? ""),
-        allowedProtocols,
-      );
-      if (!record || seen.has(record.uri)) continue;
-      seen.add(record.uri);
-      records.push(record);
-      if (records.length >= limit) return records;
-    }
-  }
-  return records;
-}
-
 function parseSpysMe(
   text: string,
   source: ProxySource,
@@ -389,9 +384,6 @@ async function fetchOneSource(
     switch (source.kind) {
       case "proxifly":
         records = parseProxifly(text, source, allowed, settings.perSourceLimit);
-        break;
-      case "geonode":
-        records = parseGeoNode(text, source, allowed, settings.perSourceLimit);
         break;
       case "spysme":
         records = parseSpysMe(text, source, allowed, settings.perSourceLimit);

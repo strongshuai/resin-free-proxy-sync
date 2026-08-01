@@ -39,6 +39,7 @@ flowchart LR
 - 设置 IANA 时区和每天执行时间，默认时区为 `Asia/Shanghai`。
 - 对响应体积、IP、端口、协议和每来源数量做限制。
 - 按来源隔离抓取错误，合并成功结果并去重。
+- 内置多个独立来源；长期维护候选包括 TheSpeedX、Hookzof、Roosterkid、Monosans、Sunny9577 和 Zaeem20。
 - 首次创建 Resin 固定本地订阅，后续只更新同一订阅。
 - KV 保存设置、快照、订阅 ID 和最近 20 次运行历史。
 - 提供 Token 保护的可选订阅地址 `/feed/<FEED_TOKEN>`。
