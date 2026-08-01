@@ -38,8 +38,8 @@ describe("buildSubscriptionContent", () => {
   });
 
   it("routes bare HTTP IPv4 Resin addresses through sslip.io", () => {
-    expect(normalizeResinApiBase("http://23.94.202.182:2260/")).toBe(
-      "http://23-94-202-182.sslip.io:2260",
+    expect(normalizeResinApiBase("http://203.0.113.10:2260/")).toBe(
+      "http://203-0-113-10.sslip.io:2260",
     );
     expect(normalizeResinApiBase("https://resin.example.com/")).toBe("https://resin.example.com");
   });
