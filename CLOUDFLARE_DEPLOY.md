@@ -42,7 +42,7 @@ http://服务器IP:2260
 
 不要添加末尾 `/api/v1`。HTTP 地址允许使用。
 
-Cloudflare Workers 直接请求裸 IPv4 时可能返回 `1003`。项目会自动把 HTTP 裸 IP 转成等价的 `sslip.io` 主机名，例如把 `http://23.94.202.182:2260` 转成 `http://23-94-202-182.sslip.io:2260`。这个过程仍然使用 HTTP，不需要域名配置或 HTTPS 证书。
+Cloudflare Workers 直接请求裸 IPv4 时可能返回 `1003`。项目会自动把 HTTP 裸 IP 转成等价的 `sslip.io` 主机名，例如把 `http://203.0.113.10:2260` 转成 `http://203-0-113-10.sslip.io:2260`。这个过程仍然使用 HTTP，不需要域名配置或 HTTPS 证书。
 
 #### `RESIN_ADMIN_TOKEN`
 
