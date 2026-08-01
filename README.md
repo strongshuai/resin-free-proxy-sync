@@ -55,7 +55,19 @@ Cron 每 5 分钟唤醒一次，Worker 只会在配置时间到达后每天执�
 
 ## HTTP Resin 地址
 
-Cloudflare Workers 的 `fetch()` 支持 HTTP。当前兼容日期也默认支持自定义端口；公网直连 IP 或未经过 Cloudflare 代理的地址可以使用 `http://IP:端口`。
+Cloudflare Workers 的 `fetch()` 支持 HTTP 和自定义端口，但直接请求裸 IPv4 地址会返回 Cloudflare `1003`。本项目会自动把：
+
+```text
+http://23.94.202.182:2260
+```
+
+转换为等价的：
+
+```text
+http://23-94-202-182.sslip.io:2260
+```
+
+`sslip.io` 只负责把主机名解析回原 IP，不需要配置域名、修改 Resin 或安装 HTTPS 证书。
 
 HTTP 不会被强制升级为 HTTPS，但 Resin Admin Token 会通过公网明文传输。
 
