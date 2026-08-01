@@ -6,8 +6,6 @@
 
 ## 一键部署
 
-> 仓库发布到 GitHub 后，将下面链接中的 `YOUR_GITHUB_USERNAME` 替换成仓库所有者名称。
-
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/strongshuai/resin-free-proxy-sync)
 
 完整步骤见 [Cloudflare 纯网页部署说明](./CLOUDFLARE_DEPLOY.md)。
