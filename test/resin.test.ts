@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { buildSubscriptionContent, upsertResinSubscription } from "../src/resin";
+import { buildSubscriptionContent, normalizeResinApiBase, upsertResinSubscription } from "../src/resin";
 import type { Env, KVNamespace } from "../src/types";
 
 class MemoryKV implements KVNamespace {
@@ -35,6 +35,13 @@ describe("buildSubscriptionContent", () => {
     expect(text).toContain("# count=2");
     expect(text).toContain("http://1.2.3.4:8080");
     expect(text).toContain("socks5://5.6.7.8:1080");
+  });
+
+  it("routes bare HTTP IPv4 Resin addresses through sslip.io", () => {
+    expect(normalizeResinApiBase("http://23.94.202.182:2260/")).toBe(
+      "http://23-94-202-182.sslip.io:2260",
+    );
+    expect(normalizeResinApiBase("https://resin.example.com/")).toBe("https://resin.example.com");
   });
 
   it("creates once and patches the same Resin subscription later", async () => {
