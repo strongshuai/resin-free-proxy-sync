@@ -1,0 +1,21 @@
+name = "resin-free-proxy-sync"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+workers_dev = true
+
+[vars]
+DEFAULT_TIMEZONE = "Asia/Shanghai"
+
+# Deploy to Cloudflare automatically provisions this namespace and replaces
+# the placeholder ID in the repository cloned for the user.
+[[kv_namespaces]]
+binding = "STATE"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[triggers]
+# Wake every five minutes; application settings decide whether today's daily
+# run is due. The execution time remains editable without redeployment.
+crons = ["*/5 * * * *"]
+
+[observability]
+enabled = true

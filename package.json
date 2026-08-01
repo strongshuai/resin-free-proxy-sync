@@ -1,0 +1,39 @@
+{
+  "name": "resin-free-proxy-sync",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "tsc --noEmit && vitest run",
+    "build": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.26.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "STATE": {
+        "description": "保存定时设置、运行历史、代理快照和 Resin 订阅 ID；Cloudflare 会自动创建 KV。"
+      },
+      "RESIN_API_BASE": {
+        "description": "Resin 公网根地址，例如 `http://服务器IP:2260`。不要附加 `/api/v1`。HTTP 可以使用。"
+      },
+      "RESIN_ADMIN_TOKEN": {
+        "description": "复制 Resin 的 `RESIN_ADMIN_TOKEN`。旧项目中位于 `data/config.json`，不要公开。"
+      },
+      "ADMIN_TOKEN": {
+        "description": "登录本项目管理页的密码。请自行填写至少 32 个字符的随机字符串。"
+      },
+      "FEED_TOKEN": {
+        "description": "可选订阅地址 `/feed/<token>` 的密码。请填写另一段较长的随机字符串。"
+      }
+    }
+  }
+}
