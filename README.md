@@ -3,6 +3,7 @@
 一个独立的 Cloudflare Worker：每天按设定时间拉取免费代理，过滤、去重后更新 Resin 中的固定本地订阅，并触发刷新。
 
 它不需要额外服务器，也不要求在你的电脑安装 Node.js 或项目依赖。通过 **Deploy to Cloudflare** 部署时，Cloudflare 会在自己的构建环境中安装依赖、创建 KV、配置 Cron 并发布 Worker。
+<img width="1920" height="620" alt="22" src="https://github.com/user-attachments/assets/89b8fd70-9110-4f5d-82f6-070a8bcfdc2f" />
 
 ## 一键部署
 
